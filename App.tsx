@@ -7,8 +7,11 @@
  *
  * @format
  */
-
+import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { createStackNavigator } from '@react-navigation/stack';
 
 import {
   SafeAreaView,
@@ -16,6 +19,7 @@ import {
   ScrollView,
   View,
   Text,
+  Button,
   StatusBar,
   ActivityIndicator,
   FlatList,
@@ -32,6 +36,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 declare const global: {HermesInternal: null | {}};
+
+
+const Stack = createStackNavigator();
 
 interface Timeline {
   id: number
@@ -50,7 +57,7 @@ async function getTimelines(): Promise<Array<Timeline>> {
 function onTimelineClicked(timeline: Timeline): void {
   Alert.alert(`Tapped ${timeline.title}`)
 }
-
+/*
 const App = () => {
   const [isLoading, setLoading] = useState(true);
   const [timelines, setTimelines] = useState<Array<Timeline>>([]);
@@ -126,3 +133,36 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+*/
+
+
+const HomeScreen = ({ navigation }) => {
+  return (
+    <Button
+      title="Go to Jane's profile"
+      onPress={() =>
+        navigation.navigate('Profile', { name: 'Jane' })
+      }
+    />
+  );
+};
+const ProfileScreen = () => {
+  return <Text>This is Jane's profile</Text>;
+};
+
+const MyStack = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default MyStack
