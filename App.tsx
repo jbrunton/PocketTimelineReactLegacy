@@ -18,7 +18,9 @@ import {
   Text,
   StatusBar,
   ActivityIndicator,
-  FlatList
+  FlatList,
+  TouchableHighlight,
+  Alert
 } from 'react-native';
 
 import {
@@ -45,6 +47,10 @@ async function getTimelines(): Promise<Array<Timeline>> {
   return json;
 }
 
+function onTimelineClicked(timeline: Timeline): void {
+  Alert.alert(`Tapped ${timeline.title}`)
+}
+
 const App = () => {
   const [isLoading, setLoading] = useState(true);
   const [timelines, setTimelines] = useState<Array<Timeline>>([]);
@@ -64,12 +70,14 @@ const App = () => {
           data={timelines}
           keyExtractor={({ id }, index) => id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>{item.title}</Text>
-            <Text style={styles.sectionDescription}>
-              {item.description}
-            </Text>
-          </View>
+            <TouchableHighlight onPress={() => onTimelineClicked(item)}>
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>{item.title}</Text>
+                <Text style={styles.sectionDescription}>
+                  {item.description}
+                </Text>
+              </View>
+            </TouchableHighlight>
           )}
         />
       )}
