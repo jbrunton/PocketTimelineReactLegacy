@@ -40,15 +40,36 @@ declare const global: {HermesInternal: null | {}};
 
 const Stack = createStackNavigator();
 
+interface Event {
+  id: number
+  title: string
+  date: string
+}
+
+interface Category {
+  id: number
+  name: string
+}
+
 interface Timeline {
   id: number
   title: string
-  description?: string
+  description?: string,
+  events?: Array<Event>,
+  categories?: Array<Category>
 }
 
 async function getTimelines(): Promise<Array<Timeline>> {
   const response = await fetch(
     'http://10.0.2.2:3000/timelines.json'
+  );
+  const json = await response.json();
+  return json;
+}
+
+async function getTimeline(id: string): Promise<Timeline> {
+  const response = await fetch(
+    `http://10.0.2.2:3000/timelines/${id}.json`
   );
   const json = await response.json();
   return json;
@@ -99,9 +120,9 @@ const HomeScreen = ({ navigation }) => {
   const [timelines, setTimelines] = useState<Array<Timeline>>([]);
 
   function onTimelineClicked(timeline: Timeline): void {
-    navigation.navigate('Profile', { name: 'Jane' })
+    navigation.navigate('Timeline', { timeline: timeline });
     //Alert.alert(`Tapped ${timeline.title}`)
-  }  
+  } 
 
   useEffect(() => {
     getTimelines().then(timelines => {
@@ -133,8 +154,10 @@ const HomeScreen = ({ navigation }) => {
     </>
   );
 };
-const ProfileScreen = () => {
-  return <Text>This is Jane's profile</Text>;
+
+const TimelineScreen = ({ route }) => {
+  const { timeline } = route.params
+  return <Text>{timeline.title}</Text>;
 };
 
 const MyStack = () => {
@@ -146,7 +169,7 @@ const MyStack = () => {
           component={HomeScreen}
           options={{ title: 'Welcome' }}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Timeline" component={TimelineScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
