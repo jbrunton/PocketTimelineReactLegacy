@@ -120,7 +120,7 @@ const HomeScreen = ({ navigation }) => {
   const [timelines, setTimelines] = useState<Array<Timeline>>([]);
 
   function onTimelineClicked(timeline: Timeline): void {
-    navigation.navigate('Timeline', { timeline: timeline });
+    navigation.navigate('Timeline', { timelineId: timeline.id });
     //Alert.alert(`Tapped ${timeline.title}`)
   } 
 
@@ -155,9 +155,36 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const TimelineScreen = ({ route }) => {
-  const { timeline } = route.params
-  return <Text>{timeline.title}</Text>;
+const TimelineScreen = ({ route, navigation }) => {
+  const { timelineId } = route.params
+
+  const [isLoading, setLoading] = useState(true);
+  const [timeline, setTimeline] = useState<Timeline>();
+
+  useEffect(() => {
+    getTimeline(timelineId).then(timeline => {
+      setTimeline(timeline)
+      setLoading(false)
+      navigation.setOptions({ title: timeline.title })
+    })
+  }, [])
+
+  return <SafeAreaView>            
+    {isLoading ? <ActivityIndicator/> : (
+    <FlatList
+      data={timeline?.events}
+      keyExtractor={({ id }, index) => id.toString()}
+      renderItem={({ item }) => (
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>{item.title}</Text>
+          <Text style={styles.sectionDescription}>
+            {item.date}
+          </Text>
+        </View>
+      )}
+    />
+  )}
+  </SafeAreaView>;
 };
 
 const MyStack = () => {
