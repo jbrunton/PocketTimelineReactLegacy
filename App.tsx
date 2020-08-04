@@ -11,6 +11,8 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
+import { Timeline, Category, Event } from './src/models/timelines'
+
 import { createStackNavigator } from '@react-navigation/stack';
 
 import {
@@ -40,24 +42,9 @@ declare const global: {HermesInternal: null | {}};
 
 const Stack = createStackNavigator();
 
-interface Event {
-  id: number
-  title: string
-  date: string
-}
 
-interface Category {
-  id: number
-  name: string
-}
 
-interface Timeline {
-  id: number
-  title: string
-  description?: string,
-  events?: Array<Event>,
-  categories?: Array<Category>
-}
+
 
 async function getTimelines(): Promise<Array<Timeline>> {
   const response = await fetch(
