@@ -13,6 +13,8 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { Timeline, Category, Event } from './src/timelines/models'
 import { getTimeline, getTimelines } from './src/timelines/api'
+import { styles } from './src/ui/styles'
+import { TimelineScreen } from './src/timelines/screens/timeline'
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -49,44 +51,7 @@ const Stack = createStackNavigator();
 
 
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+
 
 
 const HomeScreen = ({ navigation }) => {
@@ -129,37 +94,7 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const TimelineScreen = ({ route, navigation }) => {
-  const { timelineId } = route.params
 
-  const [isLoading, setLoading] = useState(true);
-  const [timeline, setTimeline] = useState<Timeline>();
-
-  useEffect(() => {
-    getTimeline(timelineId).then(timeline => {
-      setTimeline(timeline)
-      setLoading(false)
-      navigation.setOptions({ title: timeline.title })
-    })
-  }, [])
-
-  return <SafeAreaView>            
-    {isLoading ? <ActivityIndicator/> : (
-    <FlatList
-      data={timeline?.events}
-      keyExtractor={({ id }, index) => id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>{item.title}</Text>
-          <Text style={styles.sectionDescription}>
-            {item.date}
-          </Text>
-        </View>
-      )}
-    />
-  )}
-  </SafeAreaView>;
-};
 
 const MyStack = () => {
   return (
