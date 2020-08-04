@@ -54,45 +54,6 @@ async function getTimelines(): Promise<Array<Timeline>> {
   return json;
 }
 
-function onTimelineClicked(timeline: Timeline): void {
-  Alert.alert(`Tapped ${timeline.title}`)
-}
-/*
-const App = () => {
-  const [isLoading, setLoading] = useState(true);
-  const [timelines, setTimelines] = useState<Array<Timeline>>([]);
-
-  useEffect(() => {
-    getTimelines().then(timelines => {
-      setTimelines(timelines)
-      setLoading(false)
-    })
-  }, [])
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>            
-        {isLoading ? <ActivityIndicator/> : (
-        <FlatList
-          data={timelines}
-          keyExtractor={({ id }, index) => id.toString()}
-          renderItem={({ item }) => (
-            <TouchableHighlight onPress={() => onTimelineClicked(item)}>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>{item.title}</Text>
-                <Text style={styles.sectionDescription}>
-                  {item.description}
-                </Text>
-              </View>
-            </TouchableHighlight>
-          )}
-        />
-      )}
-      </SafeAreaView>
-    </>
-  );
-};
-
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: Colors.lighter,
@@ -132,18 +93,44 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
-*/
-
 
 const HomeScreen = ({ navigation }) => {
+  const [isLoading, setLoading] = useState(true);
+  const [timelines, setTimelines] = useState<Array<Timeline>>([]);
+
+  function onTimelineClicked(timeline: Timeline): void {
+    navigation.navigate('Profile', { name: 'Jane' })
+    //Alert.alert(`Tapped ${timeline.title}`)
+  }  
+
+  useEffect(() => {
+    getTimelines().then(timelines => {
+      setTimelines(timelines)
+      setLoading(false)
+    })
+  }, [])
   return (
-    <Button
-      title="Go to Jane's profile"
-      onPress={() =>
-        navigation.navigate('Profile', { name: 'Jane' })
-      }
-    />
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView>            
+        {isLoading ? <ActivityIndicator/> : (
+        <FlatList
+          data={timelines}
+          keyExtractor={({ id }, index) => id.toString()}
+          renderItem={({ item }) => (
+            <TouchableHighlight onPress={() => onTimelineClicked(item)}>
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>{item.title}</Text>
+                <Text style={styles.sectionDescription}>
+                  {item.description}
+                </Text>
+              </View>
+            </TouchableHighlight>
+          )}
+        />
+      )}
+      </SafeAreaView>
+    </>
   );
 };
 const ProfileScreen = () => {
