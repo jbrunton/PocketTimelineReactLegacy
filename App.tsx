@@ -20,39 +20,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import {
   SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  Button,
   StatusBar,
   ActivityIndicator,
   FlatList,
-  TouchableHighlight,
-  Alert
+  TouchableHighlight
 } from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 declare const global: {HermesInternal: null | {}};
 
-
 const Stack = createStackNavigator();
-
-
-
-
-
-
-
-
-
 
 const HomeScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
@@ -60,7 +38,6 @@ const HomeScreen = ({ navigation }) => {
 
   function onTimelineClicked(timeline: Timeline): void {
     navigation.navigate('Timeline', { timelineId: timeline.id });
-    //Alert.alert(`Tapped ${timeline.title}`)
   } 
 
   useEffect(() => {
@@ -93,8 +70,6 @@ const HomeScreen = ({ navigation }) => {
     </>
   );
 };
-
-
 
 const MyStack = () => {
   return (
