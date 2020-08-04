@@ -11,7 +11,8 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { Timeline, Category, Event } from './src/models/timelines'
+import { Timeline, Category, Event } from './src/timelines/models'
+import { getTimeline, getTimelines } from './src/timelines/api'
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -46,21 +47,7 @@ const Stack = createStackNavigator();
 
 
 
-async function getTimelines(): Promise<Array<Timeline>> {
-  const response = await fetch(
-    'http://10.0.2.2:3000/timelines.json'
-  );
-  const json = await response.json();
-  return json;
-}
 
-async function getTimeline(id: string): Promise<Timeline> {
-  const response = await fetch(
-    `http://10.0.2.2:3000/timelines/${id}.json`
-  );
-  const json = await response.json();
-  return json;
-}
 
 const styles = StyleSheet.create({
   scrollView: {
