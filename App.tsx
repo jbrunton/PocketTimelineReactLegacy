@@ -19,13 +19,24 @@ import { TimelineScreen } from './src/timelines/screens/timeline'
 import { createStackNavigator } from '@react-navigation/stack';
 
 import {
+  Header,
+  LearnMoreLinks,
+  Colors,
+  DebugInstructions,
+  ReloadInstructions
+} from 'react-native/Libraries/NewAppScreen';
+
+import {
   SafeAreaView,
   View,
   Text,
   StatusBar,
   ActivityIndicator,
   FlatList,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView,
+  TextInput,
+  StyleSheet
 } from 'react-native';
 
 declare const global: {HermesInternal: null | {}};
@@ -85,3 +96,92 @@ export const TimelinesStack = () => {
     </NavigationContainer>
   );
 };
+
+function fib(n: number): number {
+  let a = 1, b = 0;
+  while (n > 0){
+    const temp = a;
+    a = a + b;
+    b = temp;
+    n--;
+  }
+  return b
+}
+
+export const FibApp: () => React$Node = () => {
+  const [input, setInput] = useState('');
+  const [value, setValue] = useState('');
+
+  function updateFibValue(input: string): void {
+    setInput(input)
+    let n = Number(input)
+    setValue(fib(n).toString())
+  }
+
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={fibStyles.scrollView}>
+          <Header />
+          <View style={fibStyles.body}>
+            <View style={fibStyles.sectionContainer}>
+              <Text style={fibStyles.sectionTitle}>Fib Calculator</Text>
+              <Text style={fibStyles.sectionDescription}>
+                Enter a number:
+              </Text>
+              <TextInput
+                autoCompleteType="off"
+                keyboardType="numeric"
+                onChangeText={text => updateFibValue(text)} />
+              {input != "" && <Text style={fibStyles.sectionDescription}>
+                Fib({input}) = {value}
+              </Text>}
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  );
+};
+
+const fibStyles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: Colors.lighter,
+  },
+  engine: {
+    position: 'absolute',
+    right: 0,
+  },
+  body: {
+    backgroundColor: Colors.white,
+  },
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: Colors.black,
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+    color: Colors.dark,
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+  footer: {
+    color: Colors.dark,
+    fontSize: 12,
+    fontWeight: '600',
+    padding: 4,
+    paddingRight: 12,
+    textAlign: 'right',
+  },
+});
