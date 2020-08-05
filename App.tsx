@@ -32,7 +32,7 @@ declare const global: {HermesInternal: null | {}};
 
 const Stack = createStackNavigator();
 
-const HomeScreen = ({ navigation }) => {
+const TimelinesScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [timelines, setTimelines] = useState<Array<Timeline>>([]);
 
@@ -71,13 +71,13 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const MyStack = () => {
+export const TimelinesStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Timelines"
+          component={TimelinesScreen}
           options={{ title: 'Welcome' }}
         />
         <Stack.Screen name="Timeline" component={TimelineScreen} />
@@ -85,5 +85,3 @@ const MyStack = () => {
     </NavigationContainer>
   );
 };
-
-export default MyStack
